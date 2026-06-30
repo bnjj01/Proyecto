@@ -1,0 +1,74 @@
+:root {
+    --color-1: #122324; 
+    --color-2: #2F3A32; 
+    --color-3: #545748;
+    --color-4: #ffdabf; 
+    --color-5: #804012; 
+    --color-6: #3E2411; 
+    --color-bg: #F3F4F6;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-1);
+}
+
+/* Estilos de la Barra de Navegación */
+.navbar-custom {
+background-color: var(--color-1) !important;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link {
+    color: var(--color-4) !important;
+}
+.navbar-custom .nav-link:hover {
+    color: #ffffff !important;
+}
+.navbar-custom .dropdown-menu {
+    background-color: var(--color-2);
+}
+.navbar-custom .dropdown-item {
+    color: var(--color-4);
+}
+.navbar-custom .dropdown-item:hover {
+    background-color: var(--color-3);
+    color: #ffffff;
+}
+
+/* Títulos */
+.title-custom {
+    color: var(--color-6);
+    border-bottom: 2px solid var(--color-4) !important;
+}
+/* Labels del formulario */
+.form-label {
+    color: var(--color-2);
+    font-weight: 600;
+}
+
+.btn-custom-primary {
+    background-color: var(--color-2);
+    color: var(--color-bg);
+    border: none;
+}
+.btn-custom-primary:hover {
+    background-color: var(--color-1);
+    color: #ffffff;
+}
+
+.btn-custom-secondary {
+    background-color: var(--color-3);
+    color: var(--color-bg);
+    border: none;
+}
+
+.btn-custom-secondary:hover {
+    background-color: var(--color-2);
+    color: #ffffff;
+}
+
+
+.footer-custom {
+    background-color: var(--color-1);
+    color: var(--color-4);
+}
