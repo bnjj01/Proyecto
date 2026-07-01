@@ -85,6 +85,16 @@ final class SaleDao extends BaseDao implements InterfaceDao {
             $parameters['filtro'] = "%" . $filters['filtroCliente'] . "%";
         }
 
+        if (!empty($filters['fecha_inicio'])) {
+            $clauses[] = "DATE(v.fecha) >= :fecha_inicio";
+            $parameters['fecha_inicio'] = $filters['fecha_inicio'];
+        }
+
+        if (!empty($filters['fecha_fin'])) {
+            $clauses[] = "DATE(v.fecha) <= :fecha_fin";
+            $parameters['fecha_fin'] = $filters['fecha_fin'];
+        }
+
         if (count($clauses) > 0) {
             $sql .= " WHERE " . implode(" AND ", $clauses);
         }

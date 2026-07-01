@@ -15,11 +15,21 @@
     <div class="card-body">
         <form class="row g-3 align-items-end" id="form-filtros-ventas">
             <div class="col-md-4">
-                <label for="filtroCliente" class="form-label">Buscar por Cliente o N° Venta</label>
+                <label for="filtroCliente" class="form-label">Cliente o N° Venta</label>
                 <input type="text" name="filtroCliente" class="form-control" id="filtroCliente" placeholder="Ej: Juan Perez">
             </div>
+            
+            <div class="col-md-3">
+                <label for="fecha_inicio" class="form-label">Desde Fecha</label>
+                <input type="date" name="fecha_inicio" class="form-control" id="fecha_inicio">
+            </div>
+            <div class="col-md-3">
+                <label for="fecha_fin" class="form-label">Hasta Fecha</label>
+                <input type="date" name="fecha_fin" class="form-control" id="fecha_fin">
+            </div>
+            
             <div class="col-md-2">
-                <button type="submit" class="btn btn-outline-dark w-100">Aplicar Filtros</button>
+                <button type="submit" class="btn btn-outline-dark w-100">Filtrar</button>
             </div>
         </form>
     </div>
