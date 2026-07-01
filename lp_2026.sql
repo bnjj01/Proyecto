@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 30-06-2026 a las 22:08:39
+-- Tiempo de generación: 01-07-2026 a las 14:22:07
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -39,6 +39,7 @@ CREATE TABLE `categorias` (
 INSERT INTO `categorias` (`id`, `nombre`) VALUES
 (1, 'Herramientas Eléctricas'),
 (2, 'Herramientas Manuales'),
+(12, 'Herramientas Pesadas'),
 (3, 'Materiales de Construcción'),
 (4, 'Pinturería');
 
@@ -63,9 +64,10 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `codigo`, `descripcion`, `categoriaId`, `precio`, `stock`) VALUES
-(9, 'Cemento', 'CEM-01', 'Bolsa de cemento de 25 kg \nMArca loma negra ', 3, 8000.00, 10),
-(10, 'Martillo', 'MAR-01', 'martillo', 2, 123.00, 12),
-(11, 'Pincel', 'PIN-01', 'Pincel', 4, 123.00, 11);
+(9, 'Cemento', 'CEM-01', 'Bolsa de cemento de 25 kg \nMarca loma negra ', 3, 8000.00, 800),
+(10, 'Martillo', 'MAR-01', 'martillo', 2, 123.00, 455),
+(11, 'Pincel', 'PIN-01', 'Pincel', 4, 123.00, 120),
+(20, 'Palet de Ladrillos', 'PAL-LAD01', 'Palet de ladrillos para construccuión', 3, 20000.00, 9992);
 
 -- --------------------------------------------------------
 
@@ -91,7 +93,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `apellido`, `nombres`, `cuenta`, `perfil`, `clave`, `correo`, `estado`, `fechaAlta`, `resetPass`) VALUES
-(4, 'Pozzo', 'Benjamin', 'benja.pozzo', 'Administrador', '$2y$10$wCMciD0LrCLidHr.vR1C6OFBeuLTVXLEBMu/piRK7revQrlQw9kvW', 'bepoamhu.2016@gmail.com', 1, '2026-06-28', 0);
+(4, 'Pozzo', 'Benjamin', 'benja.pozzo', 'Administrador', '$2y$10$v7FFXRLK8NlYqCwjPsksCedOBktUyxrkb95qIHeWWBQybVMFLlpzq', 'bepoamhu.2016@gmail.com', 1, '2026-06-28', 0),
+(12, 'Decima', 'Oriana', 'Ori.Decima', 'Operador', '$2y$10$VzjzTq9LzzzdibD3n6iWBepmAUeY554b4fQ7bEkN6YO51tYTduHjm', 'ori@gmail.com', 1, '2026-06-30', 0);
 
 --
 -- Índices para tablas volcadas
@@ -129,19 +132,19 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
