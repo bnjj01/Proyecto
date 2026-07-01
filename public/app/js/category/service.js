@@ -21,6 +21,24 @@ const categoryService = {
             body: JSON.stringify(data)
         });
         return await response.json();
+    },
+
+    async update(data) {
+        const response = await fetch(window.APP_URL + 'category/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        return await response.json();
+    },
+    
+    async delete(id) {
+        const response = await fetch(window.APP_URL + 'category/delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: parseInt(id) })
+        });
+        return await response.json();
     }
 };
 

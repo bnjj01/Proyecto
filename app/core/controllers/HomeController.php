@@ -8,8 +8,6 @@ use app\libs\http\Response;
 
 class HomeController extends BaseController{
 
-    
-
     public function __construct(){
         parent::__construct();
     }

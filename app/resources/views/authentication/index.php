@@ -17,6 +17,12 @@
 <body>
     <div class="card-box">
         <h3>Iniciar Sesión</h3>
+        <?php if (!empty($_SESSION['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= htmlspecialchars($_SESSION['error']) ?>
+            </div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
         <form id="formAutenticacion" method="post" action="authentication/login" autocomplete="off">
 
             <div class="mb-3">

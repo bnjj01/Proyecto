@@ -4,12 +4,12 @@ namespace app\core\models\dto;
 final class CategoryDto {
     private int $id;
     private string $nombre;
-    private int $estado;
 
     public function __construct(array $data = []) {
-        $this->setId($data['id'] ?? 0);
+        $idSeguro = (isset($data['id']) && $data['id'] !== "") ? (int)$data['id'] : 0;
+
+        $this->setId($idSeguro);
         $this->setNombre($data['nombre'] ?? "");
-        $this->setEstado($data['estado'] ?? 1);
     }
 
     public function getId(): int {
@@ -18,10 +18,6 @@ final class CategoryDto {
 
     public function getNombre(): string {
         return $this->nombre;
-    }
-
-    public function getEstado(): int {
-        return $this->estado;
     }
 
     public function setId(int $id): void {
@@ -33,14 +29,15 @@ final class CategoryDto {
         $this->nombre = (strlen($nombreLimpio) > 0 && strlen($nombreLimpio) <= 100) ? $nombreLimpio : "";
     }
 
-    public function setEstado(int $estado): void {
-        $this->estado = ($estado === 0 || $estado === 1) ? $estado : 1;
-    }
-
     public function toArrayForSave(): array {
         return [
             'nombre' => $this->getNombre(),
-            'estado' => $this->getEstado()
+        ];
+    }
+    public function toArrayForUpdate(): array {
+        return [
+            'id'     => $this->getId(),
+            'nombre' => $this->getNombre(),
         ];
     }
 }

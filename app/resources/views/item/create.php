@@ -23,10 +23,6 @@
                     <label for="perfil" class="form-label">Categoría</label>
                     <select class="form-select" name="categoria" id="categoria" required>
                         <option value="" selected disabled>Seleccione una categoría...</option>
-                        <option value="1">Herramientas Eléctricas</option>
-                        <option value="2">Herramientas Manuales</option>
-                        <option value="3">Materiales de Construcción</option>
-                        <option value="4">Pinturería</option>
                     </select>
                 </div>
 

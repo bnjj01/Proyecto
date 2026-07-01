@@ -29,9 +29,12 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>home">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>item">Productos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>sale">Ventas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>user">Usuarios</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>client">Clientes</a></li>
+                        <?php if (isset($_SESSION['perfil']) && $_SESSION['perfil'] === 'Administrador'): ?>
+                            <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>item">Productos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>sale">Ventas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?= APP_URL?>user">Usuarios</a></li>
+                        <?php endif; ?>
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown">
@@ -39,7 +42,7 @@
                                 Mi cuenta
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="javascript:void(0)">Mis datos</a></li>
+                                <li><a class="dropdown-item" href="<?= APP_URL ?>profile">Mis datos</a></li>
                                 <li><hr class="dropdown-divider" style="border-color: var(--color-3);"></li>
                                 <li><a class="dropdown-item" href="<?= APP_URL ?>authentication/logout">Cerrar sesión</a></li>
                             </ul>

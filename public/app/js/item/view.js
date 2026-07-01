@@ -37,5 +37,19 @@ export const view = {
             `;
             tbody.appendChild(fila);
         });
+    },
+
+    renderCategories: (categorias) => {
+        const selectCategoria = document.getElementById('categoria');
+        if (!selectCategoria) return;
+
+        selectCategoria.innerHTML = '<option value="" selected disabled>Seleccione una categoría...</option>';
+
+        categorias.forEach(cat => {
+            const option = document.createElement('option');
+            option.value = cat.id; // El ID que va a la base de datos
+            option.textContent = cat.nombre; // El nombre visible
+            selectCategoria.appendChild(option);
+        });
     }
 };

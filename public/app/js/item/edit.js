@@ -1,7 +1,7 @@
 import itemController from "./controller.js";
 
-document.addEventListener("DOMContentLoaded", function() {
-    itemController.init();
+document.addEventListener("DOMContentLoaded", async function() {
+    await itemController.init();
     async function cargarItem() {
         const itemId = parseInt(document.getElementById('item-id').value);
         if (itemId > 0) {
@@ -44,8 +44,9 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById("nombre").focus(); 
         });
 
-        botonCancelar.addEventListener("click", function() {
+        botonCancelar.addEventListener("click", async function() {
             if(formulario) formulario.reset();
+            await cargarItem();
             campos.forEach(campo => campo.disabled = true);
             botonActualizar.classList.add("d-none");
             botonCancelar.classList.add("d-none");

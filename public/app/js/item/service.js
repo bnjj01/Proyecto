@@ -66,6 +66,23 @@ const itemService = {
             console.error("Error en list:", error);
             return [];
         }
-    }
+    },
+
+    getCategories: async () => {
+        try {
+            const response = await fetch(window.APP_URL + 'category/list', {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body: JSON.stringify({}) // Pedimos todas sin filtro
+            });
+            if (!response.ok) throw new Error(response.statusText);
+            
+            const data = await response.json();
+            return data.success ? data.data : [];
+        } catch (error) {
+            console.error("Error al cargar categorías:", error);
+            return [];
+        }
+    },
 };
 export default itemService;

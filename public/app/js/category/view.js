@@ -15,7 +15,8 @@ export const view = {
             fila.innerHTML = `
                 <td>${cat.nombre || ''}</td>
                 <td class="text-center">
-                    <button class="btn btn-sm btn-outline-primary" disabled>Editar</button>
+                    <button class="btn btn-sm btn-outline-primary btn-editar" data-id="${cat.id}" data-nombre="${cat.nombre}">Editar</button>
+                    <button class="btn btn-danger btn-sm btn-eliminar" data-id="${cat.id}">Eliminar</button>
                     </td>
             `;
             tbody.appendChild(fila);
@@ -23,7 +24,12 @@ export const view = {
     },
 
     resetForm: () => {
-        const form = document.getElementById('form-categoria');
-        if (form) form.reset();
+    const form = document.getElementById('form-categoria');
+    if (form) {
+        form.reset();
+        document.getElementById('categoria-id').value = '';
+        document.getElementById('btn-guardar').textContent = 'Guardar';
+        document.getElementById('btn-cancelar').classList.add('d-none');
     }
+}
 };

@@ -16,7 +16,7 @@
             <span><strong>Ultima Actualización de Stock:</strong> 10/04/2026</span>
         </div>
 
-        <form action="#" method="POST" autocomplete="off">
+        <form id="item-form" action="#" method="POST" autocomplete="off">
             <input type="hidden" id="item-id" value="<?= $this->itemId ?>">
             <div class="row mb-3">
                 <div class="col-md-4">
@@ -33,10 +33,7 @@
                 <div class="col-md-6">
                     <label for="categoria" class="form-label">Categoría</label>
                     <select class="form-select" name="categoria" id="categoria" disabled required>
-                        <option value="1">Herramientas Manuales</option>
-                        <option value="2">Herramientas Eléctricas</option>
-                        <option value="3">Materiales de Construcción</option>
-                        <option value="4">Pinturería</option>
+                        <option value="" selected disabled>Cargando categorías...</option>
                     </select>
                 </div>
                 <div class="col-md-3">

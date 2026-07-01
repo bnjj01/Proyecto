@@ -9,9 +9,17 @@ use app\core\services\UserService;
 
 class UserController extends BaseController{
     
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
+
+        if (session_status() === PHP_SESSION_NONE) {
+                session_start();
+        }
+
+        if (!isset($_SESSION['perfil']) || $_SESSION['perfil'] !== 'Administrador') {
+            header("Location: " . APP_URL . "home");
+            exit();
+        }
     }
 
     public function index(Request $request, Response $response){
@@ -145,6 +153,48 @@ class UserController extends BaseController{
             $response->setMessage($e->getMessage());
             $response->send(false);
         }
+    }
+
+    public function exportPdf(Request $request, Response $response){
+        require_once $_SERVER['DOCUMENT_ROOT'] . '/lab_prog_2026_Pozzo_Benjamin/app/libs/fpdf/fpdf.php';
+
+        $service = new \app\core\services\UserService();
+        $usuarios = $service->list();
+
+        $pdf = new \FPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(0, 10, utf8_decode('Reporte General de Usuarios'), 0, 1, 'C');
+        $pdf->Ln(2); 
+
+        $pdf->SetFont('Arial', '', 10);
+        date_default_timezone_set('America/Argentina/Rio_Gallegos');
+        $fechaActual = date('d/m/Y H:i');
+        $pdf->Cell(0, 10, utf8_decode('Fecha de emisión: ' . $fechaActual), 0, 1, 'R');
+        $pdf->Ln(5);
+
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(230, 230, 230);
+        
+        $pdf->Cell(35, 10, 'Apellido', 1, 0, 'C', true);
+        $pdf->Cell(45, 10, 'Nombres', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Cuenta', 1, 0, 'C', true);
+        $pdf->Cell(30, 10, 'Perfil', 1, 0, 'C', true);
+        $pdf->Cell(50, 10, 'Correo', 1, 1, 'C', true);
+
+        $pdf->SetFont('Arial', '', 9);
+        
+        foreach ($usuarios as $user) {
+            $pdf->Cell(35, 10, utf8_decode($user['apellido']), 1, 0, 'L');
+            $pdf->Cell(45, 10, utf8_decode($user['nombres']), 1, 0, 'L');
+            $pdf->Cell(30, 10, utf8_decode($user['cuenta']), 1, 0, 'L');
+            $pdf->Cell(30, 10, utf8_decode($user['perfil']), 1, 0, 'C');
+            $pdf->Cell(50, 10, utf8_decode($user['correo']), 1, 1, 'L');
+        }
+
+        $pdf->Output('I', 'Reporte_Usuarios.pdf');
+        exit();
     }
 
 }

@@ -13,7 +13,7 @@ final class CategoryDao extends BaseDao implements InterfaceDao {
 
     public function list(array $filters = []): array {
         // Seleccionamos los campos básicos de la categoría
-        $sql = "SELECT id, nombre, estado FROM {$this->table}";
+        $sql = "SELECT id, nombre FROM {$this->table}";
         
         $clauses = [];
         $parameters = [];
@@ -36,25 +36,36 @@ final class CategoryDao extends BaseDao implements InterfaceDao {
 
     public function save(array $data): void {
         // Adaptá esta consulta si tu tabla tiene más columnas (ej: fechaCreacion)
-        $sql = "INSERT INTO {$this->table} (nombre, estado) VALUES (:nombre, :estado)";
+        $sql = "INSERT INTO {$this->table} (nombre) VALUES (:nombre)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
-            'nombre' => $data['nombre'],
-            'estado' => $data['estado']
+            'nombre' => $data['nombre']
         ]);
     }
 
-    // --- Métodos obligatorios de InterfaceDao (Dejalos así hasta que los necesites) ---
-    
-    public function load(int $id): array {
-        return [];
-    }
-
     public function update(array $data): void {
-        // Lógica de update a futuro
+        if (empty($data['id'])) {
+            throw new \Exception("El ID es requerido para actualizar.");
+        }
+        $sql = "UPDATE {$this->table} SET nombre = :nombre WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            'id'     => $data['id'],
+            'nombre' => $data['nombre']
+        ]);
     }
 
     public function delete(int $id): void {
-        // Lógica de delete a futuro
+        $sql = "DELETE FROM {$this->table} WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        
+        if ($stmt->rowCount() == 0) {
+            throw new \Exception("No se encontró la categoría para eliminar.");
+        }
+    }
+    
+    public function load(int $id): array {
+        return [];
     }
 }

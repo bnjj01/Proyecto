@@ -27,15 +27,17 @@ final class UserService extends BaseService{
         $this->dao->save($data);
     } 
 
-    public function update(UserDto $dto): void{
-        $this->validate($dto);
-        $data = $dto->toArrayForUpdate();
-        
-        if (isset($data['clave']) && !empty($data['clave'])) {
-            $data['clave'] = password_hash($data['clave'], PASSWORD_BCRYPT);
+    public function update(UserDto $dto): void {
+        // 1. Mandamos al DAO específico a actualizar los datos generales
+        $this->userDao->update($dto->toArrayForUpdate());
+
+        // 2. Si el usuario escribió una clave nueva (no está vacía), usamos el DAO específico
+        if ($dto->getClave() !== "") {
+            $this->userDao->updatePassword([
+                'id'    => $dto->getId(),
+                'clave' => $dto->getClave()
+            ]);
         }
-        
-        $this->modify($data);
     }
 
     public function list(array $filters = []): array {
@@ -93,5 +95,16 @@ final class UserService extends BaseService{
         } catch (\Exception $e) {
             throw new \Exception("Error al restablecer la clave del usuario: " . $e->getMessage());
         }
+    }
+    
+    public function changePassword(int $id, string $password): void{
+        if ($id <= 0 || $password === "") {
+            throw new \Exception("ID de usuario y nueva contraseña son requeridos.");
+        }
+
+        $this->userDao->updatePassword([
+            'id'    => $id,
+            'clave' => $password
+        ]);
     }
 }

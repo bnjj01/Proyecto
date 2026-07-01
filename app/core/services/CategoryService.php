@@ -24,4 +24,21 @@ class CategoryService extends BaseService {
 
         $this->dao->save($dto->toArrayForSave());
     }
+    
+    public function update(CategoryDto $dto): void {
+        if ($dto->getId() <= 0) {
+            throw new \Exception("ID de categoría inválido.");
+        }
+        if ($dto->getNombre() === "") {
+            throw new \Exception("El nombre es obligatorio.");
+        }
+        $this->dao->update($dto->toArrayForUpdate());
+    }
+
+    public function delete(int $id): void {
+        if ($id <= 0) {
+            throw new \Exception("ID de categoría inválido.");
+        }
+        $this->dao->delete($id);
+    }
 }

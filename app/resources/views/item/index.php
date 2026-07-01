@@ -8,7 +8,7 @@
     <div class="col d-flex gap-2">
         <a class="btn btn-custom-primary" id="btnNewItem" href="<?= APP_URL ?>item/create">Agregar Producto</a>
         <a href="<?= APP_URL ?>category" class="btn btn-custom-secondary">Administrar Categorías</a>
-        <a href="javascript:void(0)" class="btn btn-custom-secondary">Exportar inventario</a>
+        <a href="<?= APP_URL ?>item/exportPdf" target="_blank" class="btn btn-custom-secondary">Exportar inventario</a>
     </div>
 </div>
 

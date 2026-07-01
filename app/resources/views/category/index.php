@@ -8,6 +8,8 @@
     <div class="card-body p-4">
         <h5 class="card-title h6 mb-3" >Agregar Categoría</h5>
         <form id="form-categoria" autocomplete="off">
+            <input type="hidden" name="id" id="categoria-id" value="">
+            
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre de la Categoría</label>
@@ -15,13 +17,11 @@
                 </div>
             </div>
 
-            <div class="d-flex gap-2  pt-3">
-                <button type="submit" class="btn btn-custom-primary px-4" id="btn-guardar">Validar y guardar</button>
+            <div class="d-flex gap-2 pt-3">
+                <button type="submit" class="btn btn-custom-primary px-4" id="btn-guardar">Guardar</button>
+                <button type="button" class="btn btn-secondary px-4 d-none" id="btn-cancelar">Cancelar</button>
             </div>
         </form>
-        <div id="message" class="alert alert-success d-none mt-4" >
-            ¡Formulario enviado correctamente!
-        </div>
     </div>
 </div>
 
@@ -38,8 +38,8 @@
     </div>
 </div>
 
-<div id="tabla-categorias" class="table-responsive">
-    <table class="table table-striped table-hover align-middle border" id="tabla-items">
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle border" id="tabla-categorias">
         <thead class="user-table">
             <tr>
                 <th>Nombre</th>

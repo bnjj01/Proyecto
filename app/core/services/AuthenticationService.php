@@ -17,7 +17,7 @@ final class AuthenticationService{
         $usuario = $usuarioDao->login($user);
 
         if(!Password::verify($pass, $usuario["clave"])){
-            throw new \Exception("El usuario o la clave es incorrecta.");
+            throw new \Exception("El email o la clave es incorrecta.");
         }
 
         if(Password::needsRehash($usuario["clave"])){

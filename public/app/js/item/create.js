@@ -1,9 +1,9 @@
 // 1. Corregimos el import (sin llaves)
 import itemController from "./controller.js";
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded", async function(){
     
-    itemController.init();
+    await itemController.init();
     
     const formulario = document.getElementById("item-form");
     const mensaje = document.getElementById("message");

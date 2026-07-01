@@ -57,19 +57,20 @@ final class ItemDao extends BaseDao implements InterfaceDao{
     }
 
     public function list(array $filters): array{
-        $sql = "SELECT id, nombre, codigo, descripcion, categoriaId, precio, stock FROM {$this->table}";
+        $sql = "SELECT p.id, p.nombre, p.codigo, p.descripcion, p.categoriaId, p.precio, p.stock, c.nombre as categoria 
+                FROM {$this->table} p
+                LEFT JOIN categorias c ON p.categoriaId = c.id";
         
         $clauses = [];
         $parameters = [];
 
         if (isset($filters['filtroNombre']) && $filters['filtroNombre'] !== '') {
-            
-            $clauses[] = "(nombre LIKE :nombre OR codigo LIKE :nombre)";
+            $clauses[] = "(p.nombre LIKE :nombre OR p.codigo LIKE :nombre)";
             $parameters['nombre'] = "%" . $filters['filtroNombre'] . "%";
         }
 
         if (isset($filters['filtroCategoria']) && $filters['filtroCategoria'] !== '') {
-            $clauses[] = "categoriaId = :categoriaId";
+            $clauses[] = "p.categoriaId = :categoriaId";
             $parameters['categoriaId'] = $filters['filtroCategoria'];
         }
 

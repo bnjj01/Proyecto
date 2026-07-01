@@ -3,8 +3,10 @@ import itemService from "./service.js";
 
 const itemController = {
 
-    init() {
+    async init() {
         view.init();
+        const categorias = await itemService.getCategories();
+        view.renderCategories(categorias);
     },
 
     async save() {
