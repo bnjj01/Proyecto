@@ -85,7 +85,41 @@ const userController = {
                 console.error("Error al eliminar:", error);
             }
         }
+    },
+
+    async toggleStatus(id, action) {
+        const accionTexto = action === 'enable' ? 'habilitar' : 'suspender';
+        if (confirm(`¿Estás seguro de que deseas ${accionTexto} a este usuario?`)) {
+            try {
+                const response = action === 'enable' ? await userService.enable(id) : await userService.disable(id);
+                if (response.success) {
+                    alert(`Usuario ${accionTexto}do con éxito.`);
+                    await this.list();
+                } else {
+                    alert("Error: " + response.message);
+                }
+            } catch (error) {
+                console.error(`Error al ${accionTexto}:`, error);
+            }
+        }
+    },
+
+    async resetPass(id) {
+        if (confirm("¿Estás seguro de forzar el reseteo de clave para este usuario? Se le pedirá cambiarla en su próximo login.")) {
+            try {
+                const response = await userService.reset(id);
+                if (response.success) {
+                    alert("La clave ha sido reseteada. El usuario deberá cambiarla al ingresar.");
+                } else {
+                    alert("Error: " + response.message);
+                }
+            } catch (error) {
+                console.error("Error al resetear clave:", error);
+            }
+        }
     }
 };
+
+window.userController = userController;
 
 export default userController;

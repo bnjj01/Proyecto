@@ -159,46 +159,101 @@ class ItemController extends BaseController{
 }
 
 public function exportPdf(Request $request, Response $response)
-{
-    require_once __DIR__ . '/../../libs/fpdf/fpdf.php';
+    {
+        require_once __DIR__ . '/../../libs/fpdf/fpdf.php';
 
-    $service = new ItemService();
-    $items = $service->list([]);
+        $service = new ItemService();
+        $data = $request->getDataFromInput() ?? [];
+        $id = isset($data['id']) ? (int) $data['id'] : (int) $request->getId();
 
-    $pdf = new \FPDF('P', 'mm', 'A4');
-    $pdf->AddPage();
+        $pdf = new \FPDF('P', 'mm', 'A4');
+        $pdf->AddPage();
+        date_default_timezone_set('America/Argentina/Rio_Gallegos');
+        $fechaActual = date('d/m/Y H:i');
 
-    $pdf->SetFont('Helvetica', 'B', 16);
-    $pdf->Cell(0, 10, $this->encodeText('Reporte de Inventario'), 0, 1, 'C');
-    $pdf->Ln(2);
+        if ($id > 0) {
+            $item = $service->getById($id);
 
-    $pdf->SetFont('Helvetica', '', 10);
-    date_default_timezone_set('America/Argentina/Rio_Gallegos');
-    $fechaActual = date('d/m/Y H:i');
-    $pdf->Cell(0, 10, $this->encodeText('Fecha de emisión: ' . $fechaActual), 0, 1, 'R');
-    $pdf->Ln(5);
+            $pdf->SetFont('Helvetica', 'B', 16);
+            $pdf->Cell(0, 10, $this->encodeText('Ficha del Producto'), 0, 1, 'C');
+            $pdf->Ln(2);
 
-    $pdf->SetFont('Helvetica', 'B', 10);
-    $pdf->SetFillColor(230, 230, 230);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 10, $this->encodeText('Fecha de emisión: ' . $fechaActual), 0, 1, 'R');
+            $pdf->Ln(5);
 
-    $pdf->Cell(25, 10, $this->encodeText('Código'), 1, 0, 'C', true);
-    $pdf->Cell(55, 10, $this->encodeText('Nombre'), 1, 0, 'C', true);
-    $pdf->Cell(40, 10, $this->encodeText('Categoría'), 1, 0, 'C', true);
-    $pdf->Cell(30, 10, $this->encodeText('Precio'), 1, 0, 'C', true);
-    $pdf->Cell(20, 10, $this->encodeText('Stock'), 1, 1, 'C', true);
+            $pdf->SetFont('Helvetica', 'B', 12);
+            $pdf->Cell(0, 10, $this->encodeText('Detalles del Producto'), 0, 1, 'L');
+            $pdf->Line(10, $pdf->GetY(), 200, $pdf->GetY());
+            $pdf->Ln(5);
 
-    $pdf->SetFont('Helvetica', '', 9);
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Código:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 8, $this->encodeText($item['codigo'] ?? ''), 0, 1);
 
-    foreach ($items as $item) {
-        $pdf->Cell(25, 10, $this->encodeText($item['codigo'] ?? ''), 1, 0, 'L');
-        $pdf->Cell(55, 10, $this->encodeText($item['nombre'] ?? ''), 1, 0, 'L');
-        $pdf->Cell(40, 10, $this->encodeText($item['categoria'] ?? ''), 1, 0, 'L');
-        $pdf->Cell(30, 10, $this->encodeText('$' . number_format((float)($item['precio'] ?? 0), 2, ',', '.')), 1, 0, 'R');
-        $pdf->Cell(20, 10, $this->encodeText((string)($item['stock'] ?? 0)), 1, 1, 'C');
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Nombre:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 8, $this->encodeText($item['nombre'] ?? ''), 0, 1);
+
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Categoría:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 8, $this->encodeText($item['categoria'] ?? ''), 0, 1);
+
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Precio:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 8, $this->encodeText('$' . number_format((float)($item['precio'] ?? 0), 2, ',', '.')), 0, 1);
+
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Stock Actual:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 8, $this->encodeText((string)($item['stock'] ?? 0) . ' unidades'), 0, 1);
+
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->Cell(35, 8, $this->encodeText('Descripción:'), 0, 0);
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->MultiCell(0, 8, $this->encodeText($item['descripcion'] ?? 'Sin descripción'));
+
+            $pdf->Output('I', 'Ficha_Producto_' . $id . '.pdf');
+
+        } 
+        else {
+            $items = $service->list([]);
+
+            $pdf->SetFont('Helvetica', 'B', 16);
+            $pdf->Cell(0, 10, $this->encodeText('Reporte de Inventario'), 0, 1, 'C');
+            $pdf->Ln(2);
+
+            $pdf->SetFont('Helvetica', '', 10);
+            $pdf->Cell(0, 10, $this->encodeText('Fecha de emisión: ' . $fechaActual), 0, 1, 'R');
+            $pdf->Ln(5);
+
+            $pdf->SetFont('Helvetica', 'B', 10);
+            $pdf->SetFillColor(230, 230, 230);
+
+            $pdf->Cell(25, 10, $this->encodeText('Código'), 1, 0, 'C', true);
+            $pdf->Cell(55, 10, $this->encodeText('Nombre'), 1, 0, 'C', true);
+            $pdf->Cell(40, 10, $this->encodeText('Categoría'), 1, 0, 'C', true);
+            $pdf->Cell(30, 10, $this->encodeText('Precio'), 1, 0, 'C', true);
+            $pdf->Cell(20, 10, $this->encodeText('Stock'), 1, 1, 'C', true);
+
+            $pdf->SetFont('Helvetica', '', 9);
+
+            foreach ($items as $item) {
+                $pdf->Cell(25, 10, $this->encodeText($item['codigo'] ?? ''), 1, 0, 'L');
+                $pdf->Cell(55, 10, $this->encodeText($item['nombre'] ?? ''), 1, 0, 'L');
+                $pdf->Cell(40, 10, $this->encodeText($item['categoria'] ?? ''), 1, 0, 'L');
+                $pdf->Cell(30, 10, $this->encodeText('$' . number_format((float)($item['precio'] ?? 0), 2, ',', '.')), 1, 0, 'R');
+                $pdf->Cell(20, 10, $this->encodeText((string)($item['stock'] ?? 0)), 1, 1, 'C');
+            }
+
+            $pdf->Output('I', 'Reporte_Inventario.pdf');
+        }
+        
+        exit();
     }
-
-    $pdf->Output('I', 'Reporte_Inventario.pdf');
-    exit();
-}
 
 }

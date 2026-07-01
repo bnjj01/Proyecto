@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 01-07-2026 a las 14:22:07
+-- Tiempo de generación: 01-07-2026 a las 15:41:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -42,6 +42,35 @@ INSERT INTO `categorias` (`id`, `nombre`) VALUES
 (12, 'Herramientas Pesadas'),
 (3, 'Materiales de Construcción'),
 (4, 'Pinturería');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `id` int(11) NOT NULL,
+  `tipo` varchar(20) NOT NULL,
+  `apellido` varchar(100) DEFAULT NULL,
+  `nombres` varchar(100) DEFAULT NULL,
+  `dni` varchar(20) DEFAULT NULL,
+  `razon_social` varchar(150) DEFAULT NULL,
+  `cuit` varchar(20) DEFAULT NULL,
+  `telefono` varchar(50) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `domicilio` varchar(200) DEFAULT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `tipo`, `apellido`, `nombres`, `dni`, `razon_social`, `cuit`, `telefono`, `correo`, `domicilio`, `estado`) VALUES
+(1, 'Empresa', '', '', '', 'La Serenisima', '20-3454343-2', '2975207103', 'serenisima@gmail.com', 'Buenos Aires', 0),
+(2, 'Particular', 'Esquivel', 'Solange', '33124321', '', '', '2974232132', 'Solange@gmail.com', 'Perito Moreno', 1),
+(3, 'Empresa', '', '', '', 'Distrigas', '20-78788787-2', '297892736', 'distrigas@gmail.com', 'Av las Carretas', 1);
 
 -- --------------------------------------------------------
 
@@ -94,7 +123,74 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `apellido`, `nombres`, `cuenta`, `perfil`, `clave`, `correo`, `estado`, `fechaAlta`, `resetPass`) VALUES
 (4, 'Pozzo', 'Benjamin', 'benja.pozzo', 'Administrador', '$2y$10$v7FFXRLK8NlYqCwjPsksCedOBktUyxrkb95qIHeWWBQybVMFLlpzq', 'bepoamhu.2016@gmail.com', 1, '2026-06-28', 0),
-(12, 'Decima', 'Oriana', 'Ori.Decima', 'Operador', '$2y$10$VzjzTq9LzzzdibD3n6iWBepmAUeY554b4fQ7bEkN6YO51tYTduHjm', 'ori@gmail.com', 1, '2026-06-30', 0);
+(12, 'Decima', 'Oriana', 'Ori.Decima', 'Operador', '$2y$10$M4bsf.DLITW2FL5NRNMwNOayhaTGeIDzsVxjgVR2B67rw3BY/afsm', 'ori@gmail.com', 1, '2026-06-30', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `id` int(11) NOT NULL,
+  `numero_venta` int(11) NOT NULL,
+  `fecha` datetime NOT NULL,
+  `cliente` varchar(150) NOT NULL,
+  `forma_pago` varchar(50) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `usuarioId` int(11) NOT NULL,
+  `estado` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id`, `numero_venta`, `fecha`, `cliente`, `forma_pago`, `total`, `usuarioId`, `estado`) VALUES
+(9, 9, '2026-07-01 09:05:18', 'Distrigas', 'Efectivo', 24000.00, 4, 0),
+(10, 10, '2026-07-01 09:07:03', 'Consumidor Final', 'Efectivo', 32000.00, 4, 0),
+(11, 11, '2026-07-01 09:09:22', 'Distrigas', 'Transferencia', 8000.00, 4, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas_detalle`
+--
+
+CREATE TABLE `ventas_detalle` (
+  `id` int(11) NOT NULL,
+  `ventaId` int(11) NOT NULL,
+  `productoId` int(10) UNSIGNED NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas_detalle`
+--
+
+INSERT INTO `ventas_detalle` (`id`, `ventaId`, `productoId`, `cantidad`, `precio_unitario`, `subtotal`) VALUES
+(14, 9, 9, 3, 8000.00, 24000.00),
+(15, 10, 9, 4, 8000.00, 32000.00),
+(16, 11, 9, 1, 8000.00, 8000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas_numeracion`
+--
+
+CREATE TABLE `ventas_numeracion` (
+  `numero` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas_numeracion`
+--
+
+INSERT INTO `ventas_numeracion` (`numero`) VALUES
+(12);
 
 --
 -- Índices para tablas volcadas
@@ -106,6 +202,12 @@ INSERT INTO `usuarios` (`id`, `apellido`, `nombres`, `cuenta`, `perfil`, `clave`
 ALTER TABLE `categorias`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `categorias_unique` (`nombre`);
+
+--
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `productos`
@@ -125,6 +227,21 @@ ALTER TABLE `usuarios`
   ADD UNIQUE KEY `usuarios_unique_1` (`correo`);
 
 --
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `numero_venta` (`numero_venta`);
+
+--
+-- Indices de la tabla `ventas_detalle`
+--
+ALTER TABLE `ventas_detalle`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_ventas_detalle_venta` (`ventaId`),
+  ADD KEY `fk_ventas_detalle_producto` (`productoId`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -133,6 +250,12 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `categorias`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
@@ -147,6 +270,18 @@ ALTER TABLE `usuarios`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas_detalle`
+--
+ALTER TABLE `ventas_detalle`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- Restricciones para tablas volcadas
 --
 
@@ -155,6 +290,13 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `productos`
   ADD CONSTRAINT `productos_categorias_FK` FOREIGN KEY (`categoriaId`) REFERENCES `categorias` (`id`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `ventas_detalle`
+--
+ALTER TABLE `ventas_detalle`
+  ADD CONSTRAINT `fk_ventas_detalle_producto` FOREIGN KEY (`productoId`) REFERENCES `productos` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_ventas_detalle_venta` FOREIGN KEY (`ventaId`) REFERENCES `ventas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

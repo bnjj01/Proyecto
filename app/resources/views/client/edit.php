@@ -3,6 +3,7 @@
         <h1 class="h3 mb-0">Detalle y Edición del Cliente</h1>
         <div class="d-flex gap-2">
             <button type="button" id="btn-eliminar" class="btn btn-danger btn-sm">Eliminar Cliente</button>
+            <a href="<?= APP_URL ?>client/exportPdf/<?= htmlspecialchars($this->clientId ?? 0) ?>" target="_blank" class="btn btn-secondary btn-sm">Exportar a PDF</a>
             <a href="<?= APP_URL ?>client" class="btn btn-secondary btn-sm">Volver al listado</a>
         </div>
     </div>

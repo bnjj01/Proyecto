@@ -11,8 +11,6 @@ final class AuthenticationService{
     public function login(string $user, string $pass): void{
         $conn = Connection::get();
 
-        //AUTENTICACIÓN DEL USUARIO
-
         $usuarioDao = new UserDao($conn);
         $usuario = $usuarioDao->login($user);
 
@@ -30,13 +28,13 @@ final class AuthenticationService{
         if($usuario["estado"] !== 1){
             throw new \Exception("Su cuenta esta inactiva.");
         }
-        if($usuario["resetPass"] !== 0){
-            throw new \Exception("Su clave ha caducado.");
-        }
+
+        $_SESSION["resetPass"] = (int)$usuario["resetPass"];
+     
 
         $_SESSION["token"] = APP_TOKEN;
         $_SESSION["usuarioId"] = (int)$usuario["id"];
-        $_SESSION["usuario"] = $usuario["nombre"];
+        $_SESSION["usuario"] = $usuario["nombre"] ?? ''; 
         $_SESSION["perfil"] = $usuario["perfil"];
         $_SESSION["motivoCierreSesion"] = SESSION_FINISHED;
     }

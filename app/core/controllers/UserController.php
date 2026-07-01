@@ -101,7 +101,10 @@ class UserController extends BaseController{
     }
 
     public function enable(Request $request, Response $response){
-        $id = $request->getId();
+        // Leemos el ID desde el JSON (igual que en tu método delete)
+        $data = $request->getDataFromInput() ?? [];
+        $id = isset($data['id']) ? (int)$data['id'] : (int)$request->getId();
+        
         $service = new UserService();
         try {
             $service->habilitarUsuario($id);
@@ -114,7 +117,17 @@ class UserController extends BaseController{
     }
 
     public function disable(Request $request, Response $response){
-        $id = $request->getId();
+        $data = $request->getDataFromInput() ?? [];
+        $id = isset($data['id']) ? (int)$data['id'] : (int)$request->getId();
+        
+        $idSesionActual = (int)($_SESSION['usuarioId'] ?? 0);
+        
+        if ($id === $idSesionActual) {
+            $response->setMessage("Por seguridad, no puedes suspender tu propia cuenta mientras estás logueado.");
+            $response->send(false);
+            return;
+        }
+        
         $service = new UserService();
         try {
             $service->suspenderUsuario($id);
@@ -127,7 +140,9 @@ class UserController extends BaseController{
     }
 
     public function reset(Request $request, Response $response){
-        $id = $request->getId();
+        $data = $request->getDataFromInput() ?? [];
+        $id = isset($data['id']) ? (int)$data['id'] : (int)$request->getId();
+        
         $service = new UserService();
         try {
             $service->resetearClave($id);

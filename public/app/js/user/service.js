@@ -23,10 +23,6 @@ const userService = {
             });
             const result = await response.json();
             
-            if (!result.success) {
-                console.error("🔥 MOTIVO DEL ERROR EN PHP:", result.message);
-            }
-            
             return result.success ? result.data : null;
         } catch (error) {
             console.error("Error de conexión al cargar el usuario:", error);
@@ -59,6 +55,31 @@ const userService = {
             body: JSON.stringify({ id: parseInt(id) })
         });
         return await response.json();
+    },
+
+    enable: async (id) => {
+        const res = await fetch(window.APP_URL + 'user/enable', { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id })
+        });
+        return await res.json();
+    },
+    disable: async (id) => {
+        const res = await fetch(window.APP_URL + 'user/disable', { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id })
+        });
+        return await res.json();
+    },
+    reset: async (id) => {
+        const res = await fetch(window.APP_URL + 'user/reset', { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: id })
+        });
+        return await res.json();
     }
 };
 

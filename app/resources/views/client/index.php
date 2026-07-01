@@ -7,6 +7,7 @@
 <div class="row mb-3">
     <div class="col d-flex gap-2">
         <a href="<?= APP_URL ?>client/create" class="btn btn-custom-primary">Registrar Nuevo Cliente</a>
+        <a href="<?= APP_URL ?>client/exportPdf" target="_blank" class="btn btn-custom-secondary">Exportar listado</a>
     </div>
 </div>
 

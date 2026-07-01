@@ -43,7 +43,7 @@ final class UserDao extends BaseDao implements InterfaceDao{
             throw new \Exception("El ID y la nueva clave son requeridos.");
         }
 
-        $sql = "UPDATE {$this->table} SET clave = :clave WHERE id = :id";
+        $sql = "UPDATE {$this->table} SET clave = :clave, resetPass = 0 WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         
         $stmt->execute([

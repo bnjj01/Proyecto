@@ -4,7 +4,7 @@
         
         <div class="d-flex gap-2">
             <button type="button" id="btn-eliminar" class="btn btn-danger btn-sm">Eliminar Producto</button>
-            <a href="#" class="btn btn-secondary btn-sm">Exportar a PDF</a>
+            <a href="<?= APP_URL ?>item/exportPdf/<?= $this->itemId ?>" target="_blank" class="btn btn-secondary btn-sm">Exportar a PDF</a>
         </div>
     </div>
 </div>

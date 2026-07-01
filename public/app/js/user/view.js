@@ -23,13 +23,29 @@ export const view = {
         }
 
         users.forEach(user => {
+            let btnEstado = '';
+            let badgeEstado = '';
+            
+            if (parseInt(user.estado) === 1) {
+                badgeEstado = '<span class="badge bg-success">Activo</span>';
+                btnEstado = `<button class="btn btn-sm btn-danger me-1" onclick="window.userController.toggleStatus(${user.id}, 'disable')">Suspender</button>`;
+            } else {
+                badgeEstado = '<span class="badge bg-secondary">Suspendido</span>';
+                btnEstado = `<button class="btn btn-sm btn-success me-1" onclick="window.userController.toggleStatus(${user.id}, 'enable')">Habilitar</button>`;
+            }
+
+            const btnReset = `<button class="btn btn-sm btn-warning me-1" onclick="window.userController.resetPass(${user.id})">Resetear Clave</button>`;
+            
             const fila = document.createElement('tr');
+            
             fila.innerHTML = `
-                <td>${user.cuenta || ''}</td>
-                <td>${user.nombres || ''} ${user.apellido || ''}</td>
+                <td>${user.apellido || ''}, ${user.nombres || ''} <br> ${badgeEstado}</td>
+                <td class="fw-bold">${user.cuenta || ''}</td>
                 <td>${user.perfil || ''}</td>
                 <td>${user.correo || ''}</td>
                 <td class="text-center">
+                    ${btnEstado}
+                    ${btnReset}
                     <a href="${window.APP_URL}user/edit/${user.id}" class="btn btn-sm btn-outline-primary">Editar / Ver</a>
                 </td>
             `;

@@ -26,6 +26,11 @@ class AuthenticationController extends BaseController{
             $service->login($user, $pass);
             $request->setController(APP_DEFAULT_CONTROLLER);
 
+            if (isset($_SESSION['resetPass']) && $_SESSION['resetPass'] == 1) {
+                header("Location: " . APP_URL . "profile"); 
+                exit;
+            }
+
             header("Location: " . APP_URL . "home");
             exit;
         }catch(\Exception $e){
@@ -33,9 +38,7 @@ class AuthenticationController extends BaseController{
 
             header("Location: " . APP_URL . "authentication");
             exit;
-
         }
-
     }
 
     public function logout(Request $request, Response $response){
